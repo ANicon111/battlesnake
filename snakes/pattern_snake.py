@@ -12,6 +12,7 @@
 
 import typing
 import logging
+import time
 import os
 
 from flask import Flask
@@ -111,6 +112,8 @@ def run_server(handlers: typing.Dict):
     @app.post("/move")
     def on_move():
         game_state = request.get_json()
+        # sleep to allow the browser to start
+        time.sleep((1 / (game_state["turn"] + 3)))
         return handlers["move"](game_state)
 
     @app.post("/end")

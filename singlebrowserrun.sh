@@ -6,4 +6,5 @@ cd -P -- "$(dirname -- "$0")"
 PID=$!
 sleep 3
 battlesnake/battlesnake play -W $B_WIDTH -H $B_HEIGHT --name s1 --url http://localhost:8000 -g solo --browser
+sleep 10
 kill $PID
