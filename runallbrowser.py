@@ -4,8 +4,8 @@ from pathlib import Path
 
 os.chdir(Path(__file__).parent.resolve())
 
-W = os.getenv("B_WIDTH", "11")
-H = os.getenv("B_HEIGHT", "11")
+W = 10
+H = 10
 procs, cli_args = [], []
 
 # Filter out directories and only keep files directly in the 'snakes' folder
@@ -19,10 +19,21 @@ try:
         procs.append(subprocess.Popen(cmd, env={**os.environ, "PORT": str(port)}))
         cli_args.extend(["--name", p.stem, "--url", f"http://localhost:{port}"])
         print(f"Started '{p.stem}' on port {port}")
+        W += 1
+        H += 1
 
     time.sleep(5)
     subprocess.run(
-        ["battlesnake/battlesnake", "play", "-W", W, "-H", H, "--browser", *cli_args]
+        [
+            "battlesnake/battlesnake",
+            "play",
+            "-W",
+            f"{W}",
+            "-H",
+            f"{H}",
+            "--browser",
+            *cli_args,
+        ]
     )
 
 finally:

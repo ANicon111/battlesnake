@@ -17,7 +17,7 @@ import pandas as pd
 from werkzeug.serving import make_server
 
 import main as agent
-from snakes.neural_snake_1.step_0_state_attributes import load_dataframe
+from step_0_state_attributes import load_dataframe
 
 
 def record_games(
