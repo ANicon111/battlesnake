@@ -97,7 +97,7 @@ from flask import request
 
 
 def run_server(handlers: typing.Dict):
-    app = Flask("Battlesnake")
+    app = Flask("Pattern Battlesnake")
 
     @app.get("/")
     def on_info():
@@ -128,7 +128,7 @@ def run_server(handlers: typing.Dict):
         return response
 
     host = "0.0.0.0"
-    port = int(os.environ.get("PORT", "8001"))
+    port = int(os.environ.get("PORT", "8000"))
 
     logging.getLogger("werkzeug").setLevel(logging.ERROR)
 

@@ -1,6 +1,7 @@
 """Step 3: apply the trained model to live Battlesnake /move requests."""
 
 import logging
+import os
 import numpy as np
 import pandas as pd
 import torch
@@ -41,7 +42,7 @@ class NeuralAgent:
 
 def create_app(move, start=None, end=None, info=None):
     """Same four endpoints as the unchanged Exercise 1 server, without reloading."""
-    app = Flask("Exercise 2 Battlesnake")
+    app = Flask("Neural Battlesnake #1")
 
     @app.get("/")
     def on_info():
@@ -79,12 +80,13 @@ def create_app(move, start=None, end=None, info=None):
 
 
 def main():
+    port = int(os.environ.get("PORT", "8000"))
     agent = NeuralAgent(
         "snakes/neural_snake_1_data/model.pt"
     )  # Load once; no training happens during play.
     logging.getLogger("werkzeug").setLevel(logging.ERROR)
-    print(f"Neural agent: http://127.0.0.1:8002")
-    create_app(agent.move).run(host="127.0.0.1", port=8002, debug=False)
+    print(f"Neural agent: http://127.0.0.1:{port}")
+    create_app(agent.move).run(host="127.0.0.1", port=port, debug=False)
 
 
 if __name__ == "__main__":

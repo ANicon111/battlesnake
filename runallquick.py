@@ -14,6 +14,7 @@ snake_files = sorted([p for p in Path("snakes").iterdir() if p.is_file()])
 try:
     for i, p in enumerate(snake_files):
         port = 8001 + i
+        os.environ["PORT"] = f"{port}"
         cmd = [sys.executable, str(p)] if p.suffix == ".py" else [str(p)]
 
         procs.append(subprocess.Popen(cmd, env={**os.environ, "PORT": str(port)}))

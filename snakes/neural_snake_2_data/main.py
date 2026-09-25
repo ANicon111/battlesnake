@@ -10,13 +10,14 @@
 # To get you started we've included code to prevent your Battlesnake from moving backwards.
 # For more info see docs.battlesnake.com
 
-import random
 import typing
-import logging
-import os
+import random
+from step_0_cnn_state_attributes import cnn_make_training_example
 
-from flask import Flask
-from flask import request
+# Variables required for step 1 script integration
+recording_enabled = False
+recording_seed = None
+recorded_rows = []
 
 
 # info is called when you create your Battlesnake on play.battlesnake.com
@@ -28,7 +29,7 @@ def info() -> typing.Dict:
     return {
         "apiversion": "1",
         "author": "",  # TODO: Your Battlesnake Username
-        "color": "#29C14C",  # TODO: Choose color
+        "color": "#ff0000",  # TODO: Choose color
         "head": "default",  # TODO: Choose head
         "tail": "default",  # TODO: Choose tail
     }
@@ -121,12 +122,36 @@ def move(game_state: typing.Dict) -> typing.Dict:
 
     # Choose a random move from the safe ones
     next_move = random.choice(safe_moves)
+    # Record the state and the action your rule-based agent chose
+    if recording_enabled:
+        row = cnn_make_training_example(
+            game_state, next_move, label_source="rule_based", seed=recording_seed
+        )
+        recorded_rows.append(row)
 
-    # TODO: Step 4 - Move towards food instead of random, to regain health and survive longer
-    # food = game_state['board']['food']
-
-    print(f"MOVE {game_state['turn']}: {next_move}")
     return {"move": next_move}
+
+
+# Step 1 enables recording; normal play and Step 4 do not write datasets.
+recording_enabled = False
+recording_seed = None
+recorded_rows = []
+
+
+def record_state(game_state: typing.Dict, direction: str):
+    """Store one example using the shared schema in step_0_state_attributes.py."""
+    recorded_rows.append(
+        cnn_make_training_example(
+            game_state, direction, seed=recording_seed, label_source="rule_based_agent"
+        )
+    )
+
+
+from flask import Flask, request
+
+
+import logging
+import os
 
 
 def run_server(handlers: typing.Dict):
@@ -164,10 +189,9 @@ def run_server(handlers: typing.Dict):
     logging.getLogger("werkzeug").setLevel(logging.ERROR)
 
     print(f"\nRunning Battlesnake at http://{host}:{port}")
-    app.run(host=host, port=port, debug=False)
+    app.run(host=host, port=port)
 
 
 # Start server when `python main.py` is run
 if __name__ == "__main__":
-
     run_server({"info": info, "start": start, "move": move, "end": end})
