@@ -1,0 +1,25 @@
+{
+  "history": 8,
+  "future": 3,
+  "features": [
+    "head_x",
+    "head_y",
+    "food_dx",
+    "food_dy",
+    "health",
+    "length",
+    "safe_up",
+    "safe_down",
+    "safe_left",
+    "safe_right"
+  ],
+  "actions": [
+    "up",
+    "down",
+    "left",
+    "right"
+  ],
+  "split_seed": 42,
+  "recording_sha256": "e158ee0d4bd471539f44e965ed7bdca32e882cadae95ccfd1e30cca32242bd91",
+  "dataset_sha256": "9c601eebd04a7810f9ef3a5a8751f67bbf676dae2c69a580351890da79975fd4"
+}

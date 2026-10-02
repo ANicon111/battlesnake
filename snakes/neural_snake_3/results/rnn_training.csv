@@ -1,0 +1,2 @@
+seed,best_epoch,validation_nll,parameters,seconds
+0,25,0.8592788563873426,5644,2.8751987220020965
